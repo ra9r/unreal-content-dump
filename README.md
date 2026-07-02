@@ -29,8 +29,13 @@ both at once can merge them into a single, broken command.
 /plugin install unreal-content-dump@unreal-tools
 ```
 
-Then, inside any Unreal project, invoke it with `/unreal-content-dump:content-dump` — or just ask
-Claude to "dump this project's Content to text" / "what does this Blueprint do?".
+Then start Claude Code inside your Unreal project and just ask for what you want in plain language —
+the skill triggers automatically. For example:
+
+> Review all the Blueprints and C++ in this project and give me a code review as an expert Unreal
+> Engine developer.
+
+Behind the scenes it dumps the project's Content to text, then reads it to answer.
 
 Requirements: the project's matching Unreal Engine version installed and a C++ toolchain (the
 bundled editor plugin compiles once per project).
