@@ -13,10 +13,19 @@ builds it, and runs a headless commandlet.
 
 ## Install
 
-In a Claude Code session:
+In a Claude Code terminal session (run `claude` in your terminal), enter these commands **one at a
+time — each on its own line, and wait for the first to finish before running the second**. Pasting
+both at once can merge them into a single, broken command.
+
+**1. Add the marketplace** — use the full **HTTPS** URL (avoids SSH host-key issues on public repos):
 
 ```
-/plugin marketplace add ra9r/unreal-content-dump
+/plugin marketplace add https://github.com/ra9r/unreal-content-dump.git
+```
+
+**2. Install the plugin:**
+
+```
 /plugin install unreal-content-dump@unreal-tools
 ```
 
