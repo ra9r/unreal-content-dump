@@ -1,0 +1,8 @@
+# Unreal build artifacts — the bundled plugin ships as SOURCE only
+Binaries/
+Intermediate/
+DerivedDataCache/
+Saved/
+
+# OS / editor cruft
+.DS_Store

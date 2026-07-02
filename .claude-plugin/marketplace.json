@@ -1,0 +1,20 @@
+{
+	"name": "unreal-tools",
+	"owner": {
+		"name": "Rodney Aiglstorfer",
+		"email": "rodney@aiglstorfer.com"
+	},
+	"plugins": [
+		{
+			"name": "unreal-content-dump",
+			"description": "Dump an Unreal Engine project's Blueprints and Content to readable text for AI and tooling.",
+			"category": "development",
+			"source": {
+				"source": "git-subdir",
+				"url": "https://github.com/ra9r/unreal-content-dump.git",
+				"path": "plugins/unreal-content-dump",
+				"ref": "main"
+			}
+		}
+	]
+}
