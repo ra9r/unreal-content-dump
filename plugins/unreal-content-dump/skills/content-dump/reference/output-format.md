@@ -6,7 +6,7 @@ skipped.
 
 | Asset type          | File suffix       | Contents |
 |---------------------|-------------------|----------|
-| Blueprint           | `.bp.txt`         | Parent class, implemented interfaces, variables (+ default values), components, Class Defaults (CDO overrides vs parent), and every graph (Event / Function / Macro). |
+| Blueprint           | `.bp.txt`         | Parent class, implemented interfaces, variables (+ default values), components, Class Defaults (CDO overrides vs parent), and every graph (Event / Function / Macro / Interface implementations). |
 | User Defined Struct | `.struct.txt`     | Fields with C++ types. |
 | User Defined Enum   | `.enum.txt`       | Values with display names. |
 | Data Table          | `.datatable.txt`  | Row struct + all rows as JSON. |
@@ -44,7 +44,14 @@ ParentClass: /Script/<Module>.<Class>
 
 === Macro: <Name> ===
 <nodes>
+
+=== Interface Graph: <Interface_C>: <Name> ===
+<nodes>
 ```
+
+Interface functions the Blueprint implements as a graph (with a body, not just an event) are
+stored separately from normal function graphs and appear under `=== Interface Graph: ... ===`,
+labeled with the interface's generated class (e.g. `BPI_Spinnable_C: GetHoverStatus`).
 
 ## Reading the graph (T3D node text)
 

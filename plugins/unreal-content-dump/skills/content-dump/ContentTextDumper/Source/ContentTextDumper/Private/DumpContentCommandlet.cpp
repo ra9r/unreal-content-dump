@@ -197,6 +197,16 @@ namespace
 		AppendGraphs(BP->FunctionGraphs, TEXT("Function"), Out);
 		AppendGraphs(BP->MacroGraphs, TEXT("Macro"), Out);
 
+		// Interface implementations with a graph body live in
+		// FBPInterfaceDescription::Graphs, not FunctionGraphs — without this
+		// they are invisible in the dump.
+		for (const FBPInterfaceDescription& Iface : BP->ImplementedInterfaces)
+		{
+			const FString Section = FString::Printf(TEXT("Interface Graph: %s"),
+				Iface.Interface ? *Iface.Interface->GetName() : TEXT("None"));
+			AppendGraphs(Iface.Graphs, *Section, Out);
+		}
+
 		return Out;
 	}
 
