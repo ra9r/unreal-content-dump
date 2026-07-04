@@ -7,6 +7,7 @@ skipped.
 | Asset type          | File suffix       | Contents |
 |---------------------|-------------------|----------|
 | Blueprint           | `.bp.txt`         | Parent class, implemented interfaces, variables (+ default values), components, Class Defaults (CDO overrides vs parent), and every graph (Event / Function / Macro / Interface implementations). |
+| Level Blueprint     | `.levelbp.txt`    | Same layout as `.bp.txt`, extracted from the map (`.umap`) package; first line names the map. Maps whose Level Blueprint was never created are skipped. |
 | User Defined Struct | `.struct.txt`     | Fields with C++ types. |
 | User Defined Enum   | `.enum.txt`       | Values with display names. |
 | Data Table          | `.datatable.txt`  | Row struct + all rows as JSON. |

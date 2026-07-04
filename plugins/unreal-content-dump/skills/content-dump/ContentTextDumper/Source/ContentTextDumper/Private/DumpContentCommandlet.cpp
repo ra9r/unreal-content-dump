@@ -5,6 +5,8 @@
 #include "Engine/Blueprint.h"
 #include "Engine/DataAsset.h"
 #include "Engine/DataTable.h"
+#include "Engine/Level.h"
+#include "Engine/LevelScriptBlueprint.h"
 #include "Engine/SimpleConstructionScript.h"
 #include "Engine/SCS_Node.h"
 #include "Engine/UserDefinedEnum.h"
@@ -12,6 +14,7 @@
 #include "EdGraph/EdGraph.h"
 #include "EdGraph/EdGraphNode.h"
 #include "EdGraphUtilities.h"
+#include "Engine/World.h"
 #include "HAL/FileManager.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Parse.h"
@@ -293,12 +296,14 @@ int32 UDumpContentCommandlet::Main(const FString& Params)
 	IAssetRegistry& AR = ARM.Get();
 	AR.SearchAllAssets(/*bSynchronousSearch=*/true);
 
-	// Only logic-bearing asset classes, so we never load art/maps just to skip them.
+	// Only logic-bearing asset classes, so we never load pure-art assets just to skip them.
+	// Maps (UWorld) are included solely for their Level Blueprint.
 	FARFilter Filter;
 	Filter.PackagePaths.Add(FName(*RootPath));
 	Filter.bRecursivePaths = true;
 	Filter.bRecursiveClasses = true;
 	Filter.ClassPaths.Add(UBlueprint::StaticClass()->GetClassPathName());
+	Filter.ClassPaths.Add(UWorld::StaticClass()->GetClassPathName());
 	Filter.ClassPaths.Add(UUserDefinedStruct::StaticClass()->GetClassPathName());
 	Filter.ClassPaths.Add(UUserDefinedEnum::StaticClass()->GetClassPathName());
 	Filter.ClassPaths.Add(UDataTable::StaticClass()->GetClassPathName());
@@ -320,7 +325,23 @@ int32 UDumpContentCommandlet::Main(const FString& Params)
 
 		FString Text;
 		const TCHAR* Ext = TEXT(".txt");
-		if (UBlueprint* BP = Cast<UBlueprint>(Obj))
+		if (UWorld* World = Cast<UWorld>(Obj))
+		{
+			// A map's Level Blueprint is a sub-object of its persistent ULevel, not a
+			// standalone asset, so it is only reachable through the loaded world.
+			// bDontCreate: levels whose script BP was never opened have none — skip them.
+			ULevelScriptBlueprint* LevelBP = World->PersistentLevel
+				? World->PersistentLevel->GetLevelScriptBlueprint(/*bDontCreate=*/true)
+				: nullptr;
+			if (!LevelBP)
+			{
+				continue;
+			}
+			Text = FString::Printf(TEXT("# Level Blueprint of map: %s\n\n"), *World->GetPathName());
+			Text += DumpBlueprint(LevelBP);
+			Ext = TEXT(".levelbp.txt");
+		}
+		else if (UBlueprint* BP = Cast<UBlueprint>(Obj))
 		{
 			Text = DumpBlueprint(BP);
 			Ext = TEXT(".bp.txt");
